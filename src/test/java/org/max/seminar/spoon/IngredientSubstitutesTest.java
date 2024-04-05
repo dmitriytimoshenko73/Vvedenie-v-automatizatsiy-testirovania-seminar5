@@ -44,7 +44,7 @@ public class IngredientSubstitutesTest extends AbstractTest {
         stubFor(get(urlPathEqualTo("/food/ingredients/substitutes"))
                 .withQueryParam("ingredientName", equalTo("error"))
                 .willReturn(aResponse()
-                        .withStatus(200).withBody(mapper.writeValueAsString(bodyError))));
+                        .withStatus(401).withBody(mapper.writeValueAsString(bodyError))));
 
         CloseableHttpClient httpClient = HttpClients.createDefault();
         logger.debug("http клиент создан");
@@ -68,7 +68,7 @@ public class IngredientSubstitutesTest extends AbstractTest {
 
         verify(2, getRequestedFor(urlPathEqualTo("/food/ingredients/substitutes")));
         assertEquals(200, responseOk.getStatusLine().getStatusCode());
-        assertEquals(200, responseError.getStatusLine().getStatusCode());
+        assertEquals(401, responseError.getStatusLine().getStatusCode());
         assertEquals("OK", mapper.readValue(responseOk.getEntity().getContent(), IngredientSubstitutesDto.class).getStatus());
         assertEquals("Error", mapper.readValue(responseError.getEntity().getContent(), IngredientSubstitutesDto.class).getStatus());
     }

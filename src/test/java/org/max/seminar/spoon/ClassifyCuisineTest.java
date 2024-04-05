@@ -32,7 +32,7 @@ public class ClassifyCuisineTest extends AbstractTest {
 
         logger.debug("Формирование мока для POST /recipes/cuisine");
         stubFor(post(urlEqualTo("/recipes/cuisine"))
-                .withHeader("Content-Type", equalTo("application/x-www-form-urlencoded"))
+                .withHeader("Content-Type", equalTo("application/x-www-form-urlencoded1"))
                 .withRequestBody(containing("\"title\": \"Pork roast with green beans\""))
                 .willReturn(aResponse()
                         .withStatus(200).withBody(mapper.writeValueAsString(bodyResponse))));
@@ -40,7 +40,7 @@ public class ClassifyCuisineTest extends AbstractTest {
 
         CloseableHttpClient httpClient = HttpClients.createDefault();
         HttpPost request = new HttpPost(getBaseUrl()+"/recipes/cuisine");
-        request.addHeader("Content-Type", "application/x-www-form-urlencoded");
+        request.addHeader("Content-Type", "application/x-www-form-urlencoded1");
         request.setEntity(new StringEntity("{" +
                 "\"title\": \"Pork roast with green beans\"" +
                 "}"));
@@ -49,7 +49,7 @@ public class ClassifyCuisineTest extends AbstractTest {
         HttpResponse response = httpClient.execute(request);
         //then
         verify(postRequestedFor(urlEqualTo("/recipes/cuisine"))
-                .withHeader("Content-Type", equalTo("application/x-www-form-urlencoded")));
+                .withHeader("Content-Type", equalTo("application/x-www-form-urlencoded1")));
         assertEquals(200, response.getStatusLine().getStatusCode());
         ClassifyCuisineDTO bodyToCheck = mapper.readValue(response.getEntity().getContent(), ClassifyCuisineDTO.class);
         assertEquals("CuisineValue", bodyToCheck.getCuisine());
